@@ -11,8 +11,8 @@ export default class ProcessStatusBar extends React.Component {
         return(
             <div className="width-100 height-40 align-content-center">
                 <p>
-                    You have no video in process...
-                    Please start with link entering above...
+                    Videos not found...
+                    Please enter correct link
                 </p>
             </div>
         )
