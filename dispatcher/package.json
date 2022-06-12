@@ -1,0 +1,19 @@
+{
+  "name": "dispatcher",
+  "version": "1.0.0",
+  "description": "Component that dispathes request into diff microservices",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Shirokov Kirill",
+  "license": "ISC",
+  "dependencies": {
+    "amqplib": "^0.10.0",
+    "axios": "^0.27.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.1",
+    "express": "^4.18.1"
+  }
+}
