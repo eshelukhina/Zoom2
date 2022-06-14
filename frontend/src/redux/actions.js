@@ -1,4 +1,4 @@
-import { ADD_TIMESTAMP, REORDER_TIMESTAMPS } from "./ActionTypes"
+import {ADD_TIMESTAMP, CHANGE_FOLDER_ID, LOAD_VIDEOS, REORDER_TIMESTAMPS} from "./ActionTypes"
 
 export const moveTimecodes = (id, from, to) => {
     return {
@@ -17,5 +17,19 @@ export const addTimecode = (id) => {
         payload: {
             id: id
         }
+    }
+}
+
+export const loadVideos = (videos) => {
+    return {
+        type: LOAD_VIDEOS,
+        payload: videos
+    }
+}
+
+export const changeFolderID = (id) => {
+    return {
+        type: CHANGE_FOLDER_ID,
+        payload: id
     }
 }

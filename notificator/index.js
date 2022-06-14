@@ -1,7 +1,10 @@
 const MicroMQ = require('micromq');
-const WebSocket = require('ws');
+const {WebSocketServer} = require('ws');
 const axios = require('axios');
 require('dotenv').config();
+
+let uid = 0
+const connectionsList = new Map()
 
 const app = new MicroMQ({
   name: 'notifications',
@@ -10,27 +13,36 @@ const app = new MicroMQ({
   },
 });
 
-const ws = new WebSocket.Server({
+const ws = new WebSocketServer({
   port: process.env.PORT
 });
 
 ws.on('connection', (connection) => {
 
+    const userId = uid
+    uid += 1
+    connectionsList.set(userId, connection)
+    console.log("Add connection")
+
   connection.on('message', (message) => {
 
-    const { event, data } = JSON.parse(message)
+      console.log("on message")
+      console.log(message.toString())
 
-    let userId = null
+    const { event, data } = JSON.parse(message.toString())
+
+      console.log(event, data)
 
     switch(event){
         case 'authorize':
-            userId = uid
-            uid += 1
-            connectionsList.set(userId, connection)
             connection.sendUTF(userId)
         case 'getVideos':
+            console.log(`GET /videos ${data.folderId}`)
             axios.post(process.env.DISPATCHER_URL, {to: 'gdrive /videos/:folderId', folderId: data.folderId, userId: userId}).then((res) => {
-                connection.sendUTF(res.data)
+                console.log(res.data)
+                connection.send(JSON.stringify(res.data))
+            }, (err) => {
+                console.log(err)
             })
         case 'cutVideo':
             return //TODO

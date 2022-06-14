@@ -40,7 +40,7 @@ export default function ReviewItem({id, onConfirmClick, onCancelClick}){
         const view = []
         view.push(<div className="delimeter" id={0}></div>)
         let i = 0
-        while(i < videoInfoList[id].length){
+        while(videoInfoList.length > id && i < videoInfoList[id].length){
             view.push(buildItem(i))
             view.push(<div className="delimeter" id={Number(i) + 1}></div>)
             i += 1
@@ -133,11 +133,13 @@ export default function ReviewItem({id, onConfirmClick, onCancelClick}){
     }
 
     const items = buildItems()
+    console.log(videoList[id].id)
+    const link = `https://drive.google.com/file/d/${videoList[id].id}/preview`
     return(
         <div className="flex-vertical">
             <div className="flex-horizontal margin-top-100 width-100">
                 <div className="margin-h-40">
-                    <iframe src={videoList[id].link} width="1080" height="810" allow="autoplay"/>
+                    <iframe src={link} width="960" height="720" allow="autoplay"/>
                 </div>
                 <div className="flex-vertical width-calc-list">
                     <div className="flex-horizontal align-content-center">

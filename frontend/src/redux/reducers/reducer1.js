@@ -1,16 +1,16 @@
 import { wait } from "@testing-library/user-event/dist/utils"
-import { REORDER_TIMESTAMPS, ADD_TIMESTAMP } from "../ActionTypes"
+import {REORDER_TIMESTAMPS, ADD_TIMESTAMP, CHANGE_FOLDER_ID, LOAD_VIDEOS} from "../ActionTypes"
     
     
 const initialState = {
-    folderLink: "",
+    folderID: "",
 //    videos: [],
     videos: [
-        {link: "https://drive.google.com/file/d/1ZSLIoCbngTf1ViMUVd4XLQcj0s2Z03On/preview", name: "zoom4"},
-        {link: "https://drive.google.com/file/d/1ZSLIoCbngTf1ViMUVd4XLQcj0s2Z03On/preview", name: "zoom4"},
-        {link: "https://drive.google.com/file/d/1ZSLIoCbngTf1ViMUVd4XLQcj0s2Z03On/preview", name: "zoom4"}
+        {id: "1ZSLIoCbngTf1ViMUVd4XLQcj0s2Z03On", name: "zoom4"},
+        {id: "1ZSLIoCbngTf1ViMUVd4XLQcj0s2Z03On", name: "zoom4"},
+        {id: "1ZSLIoCbngTf1ViMUVd4XLQcj0s2Z03On", name: "zoom4"}
     ],
-    videoInfo: [[[0, 4],[6, 20], [5, 7]], [[0, 4],[6, 20]], [[0, 4],[6, 20]]]
+    videoInfo: []
 }
     
 export const reducer1 = (state = initialState, action) => {
@@ -43,6 +43,16 @@ export const reducer1 = (state = initialState, action) => {
             return {
                 ...state,
                 videoInfo: timestamps
+            }
+        case CHANGE_FOLDER_ID:
+            return {
+                ...state,
+                folderID: action.payload
+            }
+        case LOAD_VIDEOS:
+            return {
+                ...state,
+                videos: action.payload
             }
         default:
             return state

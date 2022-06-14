@@ -19,8 +19,8 @@ export default function ResultList({onClick}) {
                     <MdOutlineOndemandVideo className="video-img" size={52}/>
                     <div className="flex-vertical">
                         <h3>{item.name}</h3>
-                        {videoInfoList[id] !== null && <text>found {videoInfoList[id].length} parts</text>}
-                        {videoInfoList[id] === null && <text>Processing...</text>}
+                        {videoInfoList.length > id && <text>found {videoInfoList[id].length} parts</text>}
+                        {videoInfoList.length <= id && <text>Processing...</text>}
                     </div>
                 </div>
             </div>
@@ -34,35 +34,6 @@ export default function ResultList({onClick}) {
         }
         return view
     }
-
-    //componentDidMount(){
-    //    var script = document.createElement('script');
-    //    script.onload=this.handleClientLoad;
-    //    script.src="https://apis.google.com/js/api.js";
-    //    document.body.appendChild(script);
-    //}
-    
-    
-    //initClient = () => {
-    //    try{
-    //      window.gapi.client.init({
-    //          'apiKey': process.env.ACCESS_KEY,
-    //          'scope': SCOPE,
-    //          'discoveryDocs': [discoveryUrl]
-    //        }).then(() => {
-    //          console.log(window.gapi.client)
-    //          this.setState({
-    //            client: window.gapi.client
-    //          })
-    //      });
-    //    }catch(e){
-    //      console.log(e);
-    //    }
-    //}
-    
-    //handleClientLoad = ()=>{
-    //    window.gapi.load('client', this.initClient);
-    //}
 
     const itemViews = buildItems(items)
 

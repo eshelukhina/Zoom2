@@ -15,11 +15,13 @@ app.use(cors())
 
 
 app.post('/', async (req, res) => {
-    const data = JSON.parse(req.body)
+    console.log(req.body)
+    const data = req.body
     switch(data.to){
         case 'gdrive /videos/:folderId':
-            axios.default.get(`${process.env.GDRIVE_URL}/videos/${data.folderId}`, (res1) => {
+            axios.default.get(`${process.env.GDRIVE_URL}/videos/${data.folderId}`).then((res1) => {
                 const recievedData = res1.data
+                console.log(recievedData)
                 for(i in recievedData){
                     const id = recievedData[i].id
                     const message = {userId: data.userId, videoId: id}
@@ -34,4 +36,8 @@ app.post('/', async (req, res) => {
         default:
             return
     }
+})
+
+app.listen(8081, () => {
+    console.log("listening on port 8081")
 })
