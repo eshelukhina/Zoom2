@@ -34,18 +34,24 @@ ws.on('connection', (connection) => {
       console.log(event, data)
 
     switch(event){
-        case 'authorize':
-            connection.sendUTF(userId)
         case 'getVideos':
             console.log(`GET /videos ${data.folderId}`)
             axios.post(process.env.DISPATCHER_URL, {to: 'gdrive /videos/:folderId', folderId: data.folderId, userId: userId}).then((res) => {
                 console.log(res.data)
-                connection.send(JSON.stringify(res.data))
+                connection.send(JSON.stringify({type: "loadVideos", data: res.data}))
             }, (err) => {
                 console.log(err)
             })
+            break
         case 'cutVideo':
-            return //TODO
+            axios.post(process.env.DISPATCHER_URL, {to: 'cutting /cut', data: data}).then((res) => {
+                if(res.data.status === "OK") {
+                    connection.send(JSON.stringify({type: "approveGoToCut", status: 'OK', videoId: data.videoId}))
+                } else {
+                    connection.send(JSON.stringify({type: "approveGoToCut", status: 'Failed'}))
+                }
+            })
+            break
         default:
             return
     }

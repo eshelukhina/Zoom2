@@ -20,8 +20,9 @@ const connect = async () => {
 const publish = async (queue, data) => {
     try {
         await channel.sendToQueue(queue, Buffer.from(JSON.stringify(data)))
+        return true
     } catch (ex){
-        console.log(ex)
+        return false
     }
 }
 

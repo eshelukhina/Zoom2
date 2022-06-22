@@ -30,9 +30,16 @@ app.post('/', async (req, res) => {
                 res.status(200)
                 res.send(res1.data)
             })
-            return
+            break
         case 'cutting /cut':
-            return //TODO
+            const isSuccess = await publish('cut', data)
+            res.status(200)
+            if(isSuccess){
+                res.send(JSON.stringify({status: 'OK'}))
+            } else {
+                res.send(JSON.stringify({status: 'Failed'}))
+            }
+            break
         default:
             return
     }

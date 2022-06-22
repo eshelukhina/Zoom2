@@ -1,4 +1,11 @@
-import {ADD_TIMESTAMP, CHANGE_FOLDER_ID, LOAD_VIDEOS, REORDER_TIMESTAMPS} from "./ActionTypes"
+import {
+    ADD_TIMESTAMP,
+    CHANGE_FOLDER_ID, DELETE_TIMECODE,
+    EDIT_TIMECODE,
+    LOAD_VIDEOS,
+    REMOVE_VIDEO,
+    REORDER_TIMESTAMPS
+} from "./ActionTypes"
 
 export const moveTimecodes = (id, from, to) => {
     return {
@@ -31,5 +38,34 @@ export const changeFolderID = (id) => {
     return {
         type: CHANGE_FOLDER_ID,
         payload: id
+    }
+}
+
+export const removeVideo = (id) => {
+    return {
+        type: REMOVE_VIDEO,
+        payload: id
+    }
+}
+
+export const editTimeCode = (id, iId, pos, value) => {
+    return {
+        type: EDIT_TIMECODE,
+        payload: {
+            id: id,
+            iId: iId,
+            pos: pos,
+            value: value
+        }
+    }
+}
+
+export const deleteTimeCode = (id, iId) => {
+    return {
+        type: DELETE_TIMECODE,
+        payload: {
+            id: id,
+            iId: iId
+        }
     }
 }

@@ -6,12 +6,13 @@ import LinkEnter from './components/LinkEnterComponent';
 import ProcessStatusBar from './components/ProcessStatusBarComponent';
 import ResultList from './components/ResultListComponent';
 import ReviewItem from './components/ReviewItemComponent';
-import { videos } from './redux/selectors';
+import {videoInfo, videos} from './redux/selectors';
 import ServerConnector from "./middleware/ServerConnector";
 
 function App() {
 
   const videoList = useSelector(videos)
+  const videoInfoList = useSelector(videoInfo)
 
   useEffect(() => {
     ServerConnector.establishConnection()
@@ -21,8 +22,10 @@ function App() {
   const [reviewItemId, setReviewItemId] = useState(null)
 
   const resultListOnClickHandler = (id) => {
-    setReviewItemId(id)
-    setReviewMode(true)
+    if(videoInfoList[id] !== null){
+      setReviewItemId(id)
+      setReviewMode(true)
+    }
   }
 
   const reviewItemOnCancelClick = () => {
