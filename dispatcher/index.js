@@ -1,7 +1,6 @@
 const axios = require('axios');
 const express = require('express');
 const cors = require('cors');
-require('dotenv').config();
 const {connect, publish} = require('./publisher');
 
 connect()
@@ -19,7 +18,7 @@ app.post('/', async (req, res) => {
     const data = req.body
     switch(data.to){
         case 'gdrive /videos/:folderId':
-            axios.default.get(`${process.env.GDRIVE_URL}/videos/${data.folderId}`).then((res1) => {
+            axios.default.get(`http://localhost:8083/videos/${data.folderId}`).then((res1) => {
                 const recievedData = res1.data
                 console.log(recievedData)
                 for(i in recievedData){

@@ -1,7 +1,6 @@
 const MicroMQ = require('micromq');
 const {WebSocketServer} = require('ws');
 const axios = require('axios');
-require('dotenv').config();
 
 let uid = 0
 const connectionsList = new Map()
@@ -9,12 +8,12 @@ const connectionsList = new Map()
 const app = new MicroMQ({
   name: 'notifications',
   rabbit: {
-    url: process.env.RABBIT_URL,
+    url: "http://localhost:8080",
   },
 });
 
 const ws = new WebSocketServer({
-  port: process.env.PORT
+  port: 8080
 });
 
 ws.on('connection', (connection) => {
@@ -36,7 +35,7 @@ ws.on('connection', (connection) => {
     switch(event){
         case 'getVideos':
             console.log(`GET /videos ${data.folderId}`)
-            axios.post(process.env.DISPATCHER_URL, {to: 'gdrive /videos/:folderId', folderId: data.folderId, userId: userId}).then((res) => {
+            axios.post("http://localhost:8081", {to: 'gdrive /videos/:folderId', folderId: data.folderId, userId: userId}).then((res) => {
                 console.log(res.data)
                 connection.send(JSON.stringify({type: "loadVideos", data: res.data}))
             }, (err) => {
@@ -44,7 +43,7 @@ ws.on('connection', (connection) => {
             })
             break
         case 'cutVideo':
-            axios.post(process.env.DISPATCHER_URL, {to: 'cutting /cut', data: data}).then((res) => {
+            axios.post("http://localhost:8081", {to: 'cutting /cut', data: data}).then((res) => {
                 if(res.data.status === "OK") {
                     connection.send(JSON.stringify({type: "approveGoToCut", status: 'OK', videoId: data.videoId}))
                 } else {

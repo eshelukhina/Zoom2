@@ -10,12 +10,14 @@ export default class ServerConnector {
     static establishConnection = () => {
         ServerConnector.webSocketConn = new WebSocket(backendURL)
         ServerConnector.webSocketConn.onmessage = (event) => {
-            if(event.data.type === "loadVideos"){
-                const data = JSON.parse(event.data.data)
-                console.log(data)
-                store.dispatch(loadVideos(data))
-            } else if(event.data.type === "approveGoToCut"){
-                if(event.data.status === "OK"){
+            console.log("0")
+            const data = JSON.parse(event.data)
+            if(data.type === "loadVideos"){
+                console.log("1")
+                console.log(data.data)
+                store.dispatch(loadVideos(data.data))
+            } else if(data.type === "approveGoToCut"){
+                if(data.status === "OK"){
                     removeVideo(event.data.videoId)
                     alert("Your video was successfully sent")
                 } else {

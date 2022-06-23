@@ -19,14 +19,17 @@ export default function ResultList({onClick}) {
             store.dispatch(removeVideo(item.id))
         }
 
+        console.log(videoInfoList.length)
+        console.log(videoInfoList[3])
+
         return(
             <div className="positioned flex-horizontal background-white border-rad-15 box-shadow padding-15 padding-h-20 margin-v-40" onClick={() => onClick(id)}>
                 <div className="flex-horizontal align-content-center">
                     <MdOutlineOndemandVideo className="video-img" size={52}/>
                     <div className="flex-vertical">
                         <h3>{item.name}</h3>
-                        {videoInfoList.length > id && videoInfoList[id] !== null && <text>found {videoInfoList[id].length} parts</text>}
-                        {(videoInfoList.length <= id || videoInfoList[id] === null) && <text>Processing...</text>}
+                        {videoInfoList.length > id && videoInfoList[id] && <text>found {videoInfoList[id].length} parts</text>}
+                        {(videoInfoList.length <= id || videoInfoList[id] === undefined || videoInfoList[id] === null) && <text>Processing...</text>}
                     </div>
                     <span className="close" onClick={handleRemove}></span>
                 </div>

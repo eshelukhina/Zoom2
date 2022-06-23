@@ -22,7 +22,7 @@ function App() {
   const [reviewItemId, setReviewItemId] = useState(null)
 
   const resultListOnClickHandler = (id) => {
-    if(videoInfoList[id] !== null){
+    if(videoInfoList[id] !== undefined && videoInfoList[id] !== null){
       setReviewItemId(id)
       setReviewMode(true)
     }
