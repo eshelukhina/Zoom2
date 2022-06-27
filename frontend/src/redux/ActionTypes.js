@@ -1,2 +1,7 @@
 export const REORDER_TIMESTAMPS = "REORDER_TIMESTAMPS"
-export const ADD_TIMESTAMP    = "ADD_TIMESTAMP"
+export const ADD_TIMESTAMP      = "ADD_TIMESTAMP"
+export const CHANGE_FOLDER_ID   = "CHANGE_FOLDER_ID"
+export const LOAD_VIDEOS        = "LOAD_VIDEOS"
+export const REMOVE_VIDEO       = "REMOVE_VIDEO"
+export const EDIT_TIMECODE      = "EDIT_TIMECODE"
+export const DELETE_TIMECODE    = "DELETE_TIMECODE"

@@ -1,39 +1,56 @@
 const MicroMQ = require('micromq');
-const WebSocket = require('ws');
+const {WebSocketServer} = require('ws');
 const axios = require('axios');
-require('dotenv').config();
+
+let uid = 0
+const connectionsList = new Map()
 
 const app = new MicroMQ({
   name: 'notifications',
   rabbit: {
-    url: process.env.RABBIT_URL,
+    url: "http://localhost:8080",
   },
 });
 
-const ws = new WebSocket.Server({
-  port: process.env.PORT
+const ws = new WebSocketServer({
+  port: 8080
 });
 
 ws.on('connection', (connection) => {
 
+    const userId = uid
+    uid += 1
+    connectionsList.set(userId, connection)
+    console.log("Add connection")
+
   connection.on('message', (message) => {
 
-    const { event, data } = JSON.parse(message)
+      console.log("on message")
+      console.log(message.toString())
 
-    let userId = null
+    const { event, data } = JSON.parse(message.toString())
+
+      console.log(event, data)
 
     switch(event){
-        case 'authorize':
-            userId = uid
-            uid += 1
-            connectionsList.set(userId, connection)
-            connection.sendUTF(userId)
         case 'getVideos':
-            axios.post(process.env.DISPATCHER_URL, {to: 'gdrive /videos/:folderId', folderId: data.folderId, userId: userId}).then((res) => {
-                connection.sendUTF(res.data)
+            console.log(`GET /videos ${data.folderId}`)
+            axios.post("http://localhost:8081", {to: 'gdrive /videos/:folderId', folderId: data.folderId, userId: userId}).then((res) => {
+                console.log(res.data)
+                connection.send(JSON.stringify({type: "loadVideos", data: res.data}))
+            }, (err) => {
+                console.log(err)
             })
+            break
         case 'cutVideo':
-            return //TODO
+            axios.post("http://localhost:8081", {to: 'cutting /cut', data: data}).then((res) => {
+                if(res.data.status === "OK") {
+                    connection.send(JSON.stringify({type: "approveGoToCut", status: 'OK', videoId: data.videoId}))
+                } else {
+                    connection.send(JSON.stringify({type: "approveGoToCut", status: 'Failed'}))
+                }
+            })
+            break
         default:
             return
     }

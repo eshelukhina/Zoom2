@@ -6,6 +6,7 @@ const app = express()
 
 app.get('/videos/:folderId', (req, res) => {
     const folderId = req.params.folderId
+    console.log(folderId)
     axios.default.get(`https://www.googleapis.com/drive/v3/files?q=%27${folderId}%27+in+parents&key=${process.env.API_ACCESS_KEY}`)
     .then(pRes1 => {
         const files = pRes1.data.files
@@ -17,7 +18,7 @@ app.get('/videos/:folderId', (req, res) => {
         res.status(200)
         res.send(JSON.stringify(resData))
     }, err => {
-        console.log(err)
+        //console.log(err)
         console.log("Error here")
     })
 })

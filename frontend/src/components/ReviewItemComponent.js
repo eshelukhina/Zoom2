@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { addTimecode, moveTimecodes } from "../redux/actions";
+import {addTimecode, deleteTimeCode, editTimeCode, moveTimecodes} from "../redux/actions";
 import "./styles.css"
 import { store } from "../redux/store"
 import { useSelector } from "react-redux";
@@ -10,27 +10,27 @@ export default function ReviewItem({id, onConfirmClick, onCancelClick}){
     const videoList = useSelector(videos)
     const videoInfoList = useSelector(videoInfo)
 
-    const secsToStr = (secs) => {
-        const hours = Math.floor(secs / 3600)
-        const minutes = Math.floor(secs / 60) - hours * 60
-        const sec = secs - (hours * 60 * 60) - minutes * 60
-        return `${hours}:${minutes}:${sec}`
+    const handleItemChange = (iId, pos) => (event) => {
+        store.dispatch(editTimeCode(id, iId, pos, event.target.value))
     }
 
     const buildItem = (iId) => {
 
-
+        const handleDeleteTimeCode = (id, iId) => {
+            store.dispatch(deleteTimeCode(id, iId))
+        }
 
         return(
-            <div className="my__item flex-horizontal align-content-center background-white border-rad-15 box-shadow padding-15 padding-h-20 width-100" draggable="true" id={iId}>
+            <div className="my__item positioned flex-horizontal align-content-center background-white border-rad-15 box-shadow padding-15 padding-h-20 width-100" draggable="true" id={iId}>
                 <div className="margin-right-from-field">
                     <text>from </text>
-                    <input value={secsToStr(videoInfoList[id][iId][0])}></input>
+                    <input placeholder="hh:mm:ss" value={videoInfoList[id][iId][0]} onChange={handleItemChange(iId, 0)}></input>
                 </div>
                 <div>
                     <text>to </text>
-                    <input value={secsToStr(videoInfoList[id][iId][1])}></input>
+                    <input placeholder="hh:mm:ss" value={videoInfoList[id][iId][1]} onChange={handleItemChange(iId, 1)}></input>
                 </div>
+                <span className="close" onClick={() => handleDeleteTimeCode(id, iId)}></span>
             </div>
 
         )
@@ -40,7 +40,7 @@ export default function ReviewItem({id, onConfirmClick, onCancelClick}){
         const view = []
         view.push(<div className="delimeter" id={0}></div>)
         let i = 0
-        while(i < videoInfoList[id].length){
+        while(videoInfoList.length > id && i < videoInfoList[id].length){
             view.push(buildItem(i))
             view.push(<div className="delimeter" id={Number(i) + 1}></div>)
             i += 1
@@ -133,11 +133,13 @@ export default function ReviewItem({id, onConfirmClick, onCancelClick}){
     }
 
     const items = buildItems()
+    console.log(videoList[id].id)
+    const link = `https://drive.google.com/file/d/${videoList[id].id}/preview`
     return(
         <div className="flex-vertical">
             <div className="flex-horizontal margin-top-100 width-100">
                 <div className="margin-h-40">
-                    <iframe src={videoList[id].link} width="1080" height="810" allow="autoplay"/>
+                    <iframe src={link} width="960" height="720" allow="autoplay"/>
                 </div>
                 <div className="flex-vertical width-calc-list">
                     <div className="flex-horizontal align-content-center">
