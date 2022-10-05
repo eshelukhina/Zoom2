@@ -1,6 +1,6 @@
 # Zoom2
 
-## Deploy
+## Deploy with Docker (only)
 
 1. `docker-compose up -d`
 2. `cd gdrive`, затем `npm i` и `npm start`
